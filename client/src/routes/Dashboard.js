@@ -109,7 +109,6 @@ function Dashboard() {
   const data = React.useMemo(() => getData(), []);
   return (
     <div className="min-h-screen">
-      <Header title="Dashboard" />
       <div className="flex">
         <SideBar />
         <DashboardContainer columns={columns} data={data} />

@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 function SideBar() {
   return (
-    <div className="border-2 border-neutral-900">
+    <div className="border-r-2 border-neutral-400">
       <nav className="p-5">
         <ul>
           <li className="mb-5">
             <Link to="/dashboard">Dashboard</Link>
           </li>
           <li className="mb-5">
-            <Link to="/dashboard">Bug Lists</Link>
+            <Link to="/buglists">Bug Lists</Link>
           </li>
           <li className="mb-5">
             <Link to="/dashboard">Logout</Link>
