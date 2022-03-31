@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { GoogleLogin } from "react-google-login";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
   const {
@@ -10,6 +10,7 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
 
   /*const [userData, setUserData] = useState(
@@ -21,35 +22,26 @@ function Login() {
     console.log(data);
     navigate("/");
   };
-
-  const handleLogout = () => {
-    console.log("logout");
-    localStorage.removeItem("userData");
-    //setUserData(null);
-  };
-
+  //console.log(userData);
   const onSuccess = async (result) => {
-    //console.log("LOGIN SUCCESS! Current user: ", result.profileObj);
-
     //send the ID token to your server with an HTTPS POST request
-    const res = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({
-        token: result.tokenId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await res.json();
-
-    if (data) {
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        body: JSON.stringify({
+          token: result.tokenId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      localStorage.setItem("userData", JSON.stringify(data));
       navigate("/dashboard");
+    } catch (error) {
+      console.log("error");
+      throw new Error("Isuue with login", error.message);
     }
-    console.log(data);
-    //setUserData(data);
-    localStorage.setItem("userData", JSON.stringify(data));
   };
 
   const onFailure = (res) => {
@@ -117,14 +109,14 @@ function Login() {
           >
             Login
           </button>
-          <a
+          {/*<a
             className="inline-block align-baseline font-bold text-xs text-blue-400 underline hover:text-blue-300 lg:ml-0 ml-4"
             href="#"
           >
             Forgot Password?
-          </a>
+          </a>*/}
         </div>
-        <div className="flex">
+        <div className="flex mt-5">
           <GoogleLogin
             clientId={process.env.REACT_APP_CLIENT_ID}
             buttonText="Login with Google"
@@ -134,10 +126,16 @@ function Login() {
             isSignedIn={true} //isSignedIn={true} attribute will call onSuccess callback on load to keep the user signed in.
           />
         </div>
+        <div>
+          <p className="text-sm flex justify-center mt-8 text-gray-400">
+            Not a member?{" "}
+            <a className="font-bold underline hover:text-blue-300  cursor-pointer">
+              {" "}
+              Sign up now
+            </a>
+          </p>
+        </div>
       </form>
-      <button className="mt-8" onClick={handleLogout}>
-        Logout
-      </button>
     </div>
   );
 }

@@ -1,7 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogout } from "react-google-login";
 
 function SideBar() {
+  const navigate = useNavigate();
+
+  const onSuccess = () => {
+    console.log("Logout");
+    localStorage.removeItem("userData");
+    navigate("/");
+  };
   return (
     <div className="border-r-2 border-neutral-400">
       <nav className="p-5">
@@ -12,10 +20,12 @@ function SideBar() {
           <li className="mb-5">
             <Link to="/buglists">Bug Lists</Link>
           </li>
-          <li className="mb-5">
-            <Link to="/dashboard">Logout</Link>
-          </li>
         </ul>
+        <GoogleLogout
+          clientId={process.env.REACT_APP_CLIENT_ID}
+          buttonText="Logout"
+          onLogoutSuccess={onSuccess}
+        />
       </nav>
     </div>
   );
