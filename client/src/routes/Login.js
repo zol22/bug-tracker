@@ -130,7 +130,7 @@ function Login() {
             onSuccess={onSuccess}
             onFailure={onFailure}
             cookiePolicy={"single_host_origin"}
-            isSignedIn={true} //isSignedIn={true} attribute will call onSuccess callback on load to keep the user signed in.
+            isSignedIn={true} //isSignedIn={true} attribute will call onSuccess callback on load to keep the user signed in. yes
           />
         </div>
         <div>
