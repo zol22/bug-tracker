@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { GoogleLogin } from "react-google-login";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const {
@@ -22,9 +22,10 @@ function Login() {
     console.log(data);
     navigate("/");
   };
-  //console.log(userData);
+
   const onSuccess = async (result) => {
     //send the ID token to your server with an HTTPS POST request
+
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -42,6 +43,14 @@ function Login() {
       console.log("error");
       throw new Error("Isuue with login", error.message);
     }
+  };
+
+  const signAsGuest = () => {
+    const data = {
+      name: "guest",
+    };
+    localStorage.setItem("userData", JSON.stringify(data));
+    navigate("/dashboard");
   };
 
   const onFailure = (res) => {
@@ -103,18 +112,16 @@ function Login() {
           </p>
         </div>
         <div className="flex items-center justify-between">
-          <button
-            className="bg-cyan-700 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded"
-            type="submit"
-          >
+          <button className="bg-violet-900 hover:bg-violet-800 text-white font-bold py-2 px-4 rounded mr-5">
             Login
           </button>
-          {/*<a
-            className="inline-block align-baseline font-bold text-xs text-blue-400 underline hover:text-blue-300 lg:ml-0 ml-4"
-            href="#"
+          <button
+            type="submit"
+            className="bg-violet-900 hover:bg-violet-800 text-white font-bold py-2 px-4 rounded"
+            onClick={signAsGuest}
           >
-            Forgot Password?
-          </a>*/}
+            Login as Guest
+          </button>
         </div>
         <div className="flex mt-5">
           <GoogleLogin
@@ -129,7 +136,7 @@ function Login() {
         <div>
           <p className="text-sm flex justify-center mt-8 text-gray-400">
             Not a member?{" "}
-            <a className="font-bold underline hover:text-blue-300  cursor-pointer">
+            <a className="ml-2 font-bold underline hover:text-blue-300  cursor-pointer">
               {" "}
               Sign up now
             </a>

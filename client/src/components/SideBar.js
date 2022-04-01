@@ -10,6 +10,11 @@ function SideBar() {
     localStorage.removeItem("userData");
     navigate("/");
   };
+
+  const logoutAsGuest = () => {
+    localStorage.removeItem("userData");
+    navigate("/");
+  };
   return (
     <div className="border-r-2 border-neutral-400">
       <nav className="p-5">
@@ -21,11 +26,20 @@ function SideBar() {
             <Link to="/buglists">Bug Lists</Link>
           </li>
         </ul>
-        <GoogleLogout
-          clientId={process.env.REACT_APP_CLIENT_ID}
-          buttonText="Logout"
-          onLogoutSuccess={onSuccess}
-        />
+        {JSON.parse(localStorage.getItem("userData")).name === "guest" ? (
+          <button
+            className="bg-violet-900 hover:bg-violet-800 text-white font-bold py-2 px-4 rounded"
+            onClick={logoutAsGuest}
+          >
+            Logout
+          </button>
+        ) : (
+          <GoogleLogout
+            clientId={process.env.REACT_APP_CLIENT_ID}
+            buttonText="Logout"
+            onLogoutSuccess={onSuccess}
+          />
+        )}
       </nav>
     </div>
   );
